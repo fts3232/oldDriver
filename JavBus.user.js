@@ -23,7 +23,6 @@
 // @grant        GM_getResourceURL
 
 // @connect      *
-// @copyright    MIT License
 
 
 //测试123
