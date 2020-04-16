@@ -98,6 +98,7 @@
                         let elems = dom.find(_this.config['items']);
                         elems.each(function (i) {
                             $(this).attr('style', '');
+                            $(this).find('a').attr('target','_blank')
                         });
                         $(_this.config['pagination']).html(dom.find(_this.config['pagination']).html());
                         $(_this.config['selector']).append(elems);
