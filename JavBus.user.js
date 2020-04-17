@@ -99,6 +99,13 @@
                         elems.each(function (i) {
                             $(this).attr('style', '');
                             $(this).find('a').attr('target','_blank')
+                            if(_this.config['selector'] === 'div#video_comments'){
+                                let text = $(this).find('textarea').val();
+                                text = text.replace(/\[url=([^\[\]]*?)\](.*?)\[\/url\]/g,'<a href="redirect.php?url=$1" target="_blank">$2</a>')
+                                text = text.replace(/\[color=([^\[\]]*?)\](.*?)\[\/color\]/g,'<span style="color:$1">$2</span>')
+                                text = text.replace(/\[b\](.*?)\[\/b\]/g,'<b>$1</b>')
+                                $(this).find('.text').html(text).css('width','442px');
+                            }
                         });
                         $(_this.config['pagination']).html(dom.find(_this.config['pagination']).html());
                         $(_this.config['selector']).append(elems);
@@ -320,14 +327,24 @@
         }
 
         listPage() {
-            //初始化瀑布流
-            this.Waterfall.init({
+            let config = {
                 'useMasonry': false,
                 'selector'  : 'div.videos',
                 'pagination': 'div.page_selector',
                 'next'      : 'a.page.next',
                 'items'     : 'div.video',
-            });
+            };
+            if($('#video_comments').length > 0){
+                config = {
+                    'useMasonry': false,
+                    'selector'  : 'div#video_comments',
+                    'pagination': 'div.page_selector',
+                    'next'      : 'a.page.next',
+                    'items'     : 'table.comment',
+                };
+            }
+            //初始化瀑布流
+            this.Waterfall.init(config);
             //超链接改为新窗口打开
             $('.videos a').attr('target', '_blank');
         }
