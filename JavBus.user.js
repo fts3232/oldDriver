@@ -15,7 +15,11 @@
 // @include     *://*cdnbus.one/*
 // @include     *://*javlibrary.com/*
 
+// @include     *://www.*bus*/*
+// @include     *://www.*dmm*/*
+
 // @run-at       document-idle
+// @grant        GM_download
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -62,7 +66,7 @@
             if (this.waterfallScrollStatus > 0 && $(this.config['pagination']).length > 0) {
                 document.addEventListener('scroll', this.scroll.bind(this));
             }
-            if(this.config['useMasonry']){
+            if (this.config['useMasonry']) {
                 this.masonryObj = $(this.config['selector']).masonry({
                     itemSelector: this.config['items'],
                     isAnimated  : false,
@@ -98,18 +102,18 @@
                         let elems = dom.find(_this.config['items']);
                         elems.each(function (i) {
                             $(this).attr('style', '');
-                            $(this).find('a').attr('target','_blank')
-                            if(_this.config['selector'] === 'div#video_comments'){
+                            $(this).find('a').attr('target', '_blank')
+                            if (_this.config['selector'] === 'div#video_comments') {
                                 let text = $(this).find('textarea').val();
-                                text = text.replace(/\[url=([^\[\]]*?)\](.*?)\[\/url\]/g,'<a href="redirect.php?url=$1" target="_blank">$2</a>')
-                                text = text.replace(/\[color=([^\[\]]*?)\](.*?)\[\/color\]/g,'<span style="color:$1">$2</span>')
-                                text = text.replace(/\[b\](.*?)\[\/b\]/g,'<b>$1</b>')
-                                $(this).find('.text').html(text).css('width','442px');
+                                text = text.replace(/\[url=([^\[\]]*?)\](.*?)\[\/url\]/g, '<a href="redirect.php?url=$1" target="_blank">$2</a>')
+                                text = text.replace(/\[color=([^\[\]]*?)\](.*?)\[\/color\]/g, '<span style="color:$1">$2</span>')
+                                text = text.replace(/\[b\](.*?)\[\/b\]/g, '<b>$1</b>')
+                                $(this).find('.text').html(text).css('width', '442px');
                             }
                         });
                         $(_this.config['pagination']).html(dom.find(_this.config['pagination']).html());
                         $(_this.config['selector']).append(elems);
-                        if(_this.config['useMasonry']){
+                        if (_this.config['useMasonry']) {
                             _this.masonryObj.masonry('appended', elems).masonry();
                         }
                         _this.done = true;
@@ -213,6 +217,19 @@
                 .tab-pane td, .table-condensed > tbody > tr > td { padding:8px; } 
                 .info a.red {color:red}
                 .pointer {cursor:pointer}
+                .screencap {
+                        position: relative;
+                }
+                .screencap a.download {
+                    position: absolute;
+                    background: #fff;
+                    border: 1px solid #000;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    right: 20px;
+                    top: 5px;
+                }
             `);
             this.deleteAD();
             if ($('div.masonry').length > 0) {
@@ -257,6 +274,20 @@
             info.append("<p><a class='red' href='http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + code + "' target='_blank'>javlibrary</a></p>");
             //演员
             $('.genre a').attr('target', '_blank');
+            //封面图添加下载按钮
+            let downloadBtn = $('<a class="download">下载</a>');
+            let imgUrl = $('.screencap img').attr('src');
+            downloadBtn.on('click', function (e) {
+                e.stopPropagation();
+                GM_download({
+                    url:imgUrl,
+                    saveAs:true,
+                    name:code + imgUrl.substring(imgUrl.lastIndexOf("."))
+                });
+                return false;
+            });
+            downloadBtn.attr('download', code);
+            $('.screencap').append(downloadBtn);
         }
 
         listPage() {
@@ -317,6 +348,19 @@
                 #video_info td {
                     vertical-align: text-bottom;
                 }
+                #video_jacket {
+                    position: relative;
+                }
+                #video_jacket a {
+                    position: absolute;
+                    background: #fff;
+                    border: 1px solid #000;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    right: 5px;
+                    top: 5px;
+                }
             `);
             if ($('div.page_selector').length > 0) {
                 this.listPage();
@@ -334,7 +378,7 @@
                 'next'      : 'a.page.next',
                 'items'     : 'div.video',
             };
-            if($('#video_comments').length > 0){
+            if ($('#video_comments').length > 0) {
                 config = {
                     'useMasonry': false,
                     'selector'  : 'div#video_comments',
@@ -346,6 +390,7 @@
             //初始化瀑布流
             this.Waterfall.init(config);
             //超链接改为新窗口打开
+            $('.comment a').attr('target', '_blank');
             $('.videos a').attr('target', '_blank');
         }
 
@@ -364,24 +409,46 @@
             info.append("<div class='item'><table><tbody><tr><td class='header'><a class='red' href='https://www.cdnbus.one/" + code + "' target='_blank'>javbus</a></td></tr></tbody></table></div>");
             //演员
             info.find('a').attr('target', '_blank');
+            //封面图添加下载按钮
+            let downloadBtn = $('<a>下载</a>');
+            let imgUrl = $('#video_jacket img').attr('src');
+            downloadBtn.on('click', function () {
+                GM_download({
+                    url:imgUrl,
+                    saveAs:true,
+                    name:code + imgUrl.substring(imgUrl.lastIndexOf("."))
+                });
+            });
+            downloadBtn.attr('download', code);
+            $('#video_jacket').append(downloadBtn);
         }
     }
 
-    let domain = location.host;
-    let site;
-    if ($("footer:contains('JavBus')").length) {
-        site = 'javBus';
-    } else if (domain.indexOf('library') !== -1) {
-        site = 'javLibrary'
+    class Main {
+        constructor() {
+            if ($("footer:contains('JavBus')").length) {
+                this.site = 'javBus';
+            } else if ($("#bottomcopyright:contains('JAVLibrary')").length) {
+                this.site = 'javLibrary'
+            }
+        }
+
+        make() {
+            let waterfallObj = new Waterfall();
+            let requestObj = new Request();
+            let obj;
+            switch (this.site) {
+                case 'javBus':
+                    obj = new JavBus(requestObj, waterfallObj);
+                    break;
+                case 'javLibrary':
+                    obj = new JavLibrary(requestObj, waterfallObj);
+                    break;
+            }
+            return obj;
+        }
     }
-    let waterfallObj = new Waterfall();
-    let requestObj = new Request();
-    switch (site) {
-        case 'javBus':
-            new JavBus(requestObj, waterfallObj);
-            break;
-        case 'javLibrary':
-            new JavLibrary(requestObj, waterfallObj);
-            break;
-    }
+
+    let main = new Main();
+    main.make();
 })(); 
