@@ -406,7 +406,7 @@
                 $(this).find('td').last().html('←已复制到黏贴板');
             });
             //添加跳转到javlibrary链接
-            info.append("<div class='item'><table><tbody><tr><td class='header'><a class='red' href='https://www.cdnbus.one/" + code + "' target='_blank'>javbus</a></td></tr></tbody></table></div>");
+            info.append("<div class='item'><table><tbody><tr><td class='header'><a class='red' href='https://https://www.busfan.cc/" + code + "' target='_blank'>javbus</a></td></tr></tbody></table></div>");
             //演员
             info.find('a').attr('target', '_blank');
             //封面图添加下载按钮
