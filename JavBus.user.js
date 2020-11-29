@@ -2,7 +2,7 @@
 // @name         JavBus
 // @namespace    https://greasyfork.org/zh-CN/users/495073-fts3232
 // @homepageURL  https://github.com/fts3232/oldDriver
-// @version      1.0.5
+// @version      1.0.6
 // @source       https://github.com/fts3232/oldDriver
 // @description  JavBus排版更新
 // @author       fts3232
@@ -406,7 +406,7 @@
                 $(this).find('td').last().html('←已复制到黏贴板');
             });
             //添加跳转到javlibrary链接
-            info.append("<div class='item'><table><tbody><tr><td class='header'><a class='red' href='https://www.busfan.cc/" + code + "' target='_blank'>javbus</a></td></tr></tbody></table></div>");
+            info.append("<div class='item'><table><tbody><tr><td class='header'><a class='red' href='https://www.busfan.blog/" + code + "' target='_blank'>javbus</a></td></tr></tbody></table></div>");
             //演员
             info.find('a').attr('target', '_blank');
             //封面图添加下载按钮
