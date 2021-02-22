@@ -2,7 +2,7 @@
 // @name         JavBus
 // @namespace    https://greasyfork.org/zh-CN/users/495073-fts3232
 // @homepageURL  https://github.com/fts3232/oldDriver
-// @version      1.0.7
+// @version      1.0.8
 // @source       https://github.com/fts3232/oldDriver
 // @description  JavBus排版更新
 // @author       fts3232
@@ -421,7 +421,7 @@
             let codeArr = code.split('-');
             let videoSeries = codeArr[0].toLowerCase();
             let videoNo = format_zero(codeArr[1],5);
-            let videoUrl = '//cc3001.dmm.co.jp/litevideo/freepv/' + videoSeries[0] + '/' + videoSeries.substr(0, videoSeries.length-1) + '/' + videoSeries + videoNo + '/' + videoSeries + videoNo + '_mhb_w.mp4';
+            let videoUrl = '//cc3001.dmm.co.jp/litevideo/freepv/' + videoSeries[0] + '/' + videoSeries.substr(0, 3) + '/' + videoSeries + videoNo + '/' + videoSeries + videoNo + '_mhb_w.mp4';
             let video = $('<div style="text-align: center;padding: 10px;border-radius: 4px;border: 1px solid #ccc;margin: 10px 0;"><video src="' + videoUrl + '" controls></video></div>')
             $('#video_favorite_edit').before(video)
             //封面图添加下载按钮
