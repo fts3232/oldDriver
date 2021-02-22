@@ -31,9 +31,6 @@
 
 // @license      MIT
 
-
-//测试123
-
 // ==/UserScript==
 (function () {
     'use strict';
@@ -48,6 +45,17 @@
             return style;
         })();
         style.innerHTML = css;
+    }
+
+    /**
+     * 左则补零
+     * @param num
+     * @param len
+     * @returns {*}
+     */
+    function format_zero(num, len) {
+        if(String(num).length > len) return num;
+        return (Array(len).join(0) + num).slice(-len);
     }
 
     //瀑布流
@@ -409,6 +417,13 @@
             info.append("<div class='item'><table><tbody><tr><td class='header'><a class='red' href='https://www.busfan.blog/" + code + "' target='_blank'>javbus</a></td></tr></tbody></table></div>");
             //演员
             info.find('a').attr('target', '_blank');
+            //添加预告视频观看按钮
+            let codeArr = code.split('-');
+            let videoSeries = codeArr[0].toLowerCase();
+            let videoNo = format_zero(codeArr[1],5);
+            let videoUrl = '//cc3001.dmm.co.jp/litevideo/freepv/' + videoSeries[0] + '/' + videoSeries.substr(0, videoSeries.length-1) + '/' + videoSeries + videoNo + '/' + videoSeries + videoNo + '_mhb_w.mp4';
+            let video = $('<div style="text-align: center;padding: 10px;border-radius: 4px;border: 1px solid #ccc;margin: 10px 0;"><video src="' + videoUrl + '" controls></video></div>')
+            $('#video_favorite_edit').before(video)
             //封面图添加下载按钮
             let downloadBtn = $('<a>下载</a>');
             let imgUrl = $('#video_jacket img').attr('src');
