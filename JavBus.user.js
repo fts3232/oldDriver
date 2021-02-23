@@ -278,6 +278,13 @@
                     }
                 });
             })
+            //添加预告视频观看按钮
+            let codeArr = code.split('-');
+            let videoSeries = codeArr[0].toLowerCase();
+            let videoNo = format_zero(codeArr[1],5);
+            let videoUrl = '//cc3001.dmm.co.jp/litevideo/freepv/' + videoSeries[0] + '/' + videoSeries.substr(0, 3) + '/' + videoSeries + videoNo + '/' + videoSeries + videoNo + '_mhb_w.mp4';
+            let video = $('<div style="text-align: center;padding: 10px;border-radius: 4px;border: 1px solid #ccc;margin: 10px 0;"><video src="' + videoUrl + '" controls></video></div>')
+            $('#mag-submit-show').before(video)
             //添加跳转到javlibrary链接
             info.append("<p><a class='red' href='http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + code + "' target='_blank'>javlibrary</a></p>");
             //演员
