@@ -2,7 +2,7 @@
 // @name         JavBus
 // @namespace    https://greasyfork.org/zh-CN/users/495073-fts3232
 // @homepageURL  https://github.com/fts3232/oldDriver
-// @version      1.0.8
+// @version      1.0.10
 // @source       https://github.com/fts3232/oldDriver
 // @description  JavBus排版更新
 // @author       fts3232
